@@ -31,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,25 @@ class _MyHomePageState extends State<MyHomePage> {
             firstDay: DateTime.utc(2024, 1, 1),
             lastDay: DateTime.utc(2028, 12, 31),
             focusedDay: _focusedDay,
-            locale: 'ja_Jp'),
+            locale: 'ja_Jp',
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay; // 更新されたフォーカス日を保持
+              });
+            },
+            calendarBuilders: CalendarBuilders(
+              selectedBuilder: (context, date, events) => Container(
+                  margin: const EdgeInsets.all(4.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    date.day.toString(),
+                    style: TextStyle(color: Colors.red),
+                  )),
+            )),
       ),
     ));
   }
