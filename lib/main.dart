@@ -4,7 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 DateTime _focusedDay = DateTime.now();
 void main() {
-  initializeDateFormatting('ja').then((_) => runApp(MyApp()));
+  initializeDateFormatting('ja').then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -30,16 +30,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-      padding: EdgeInsets.only(top: 50),
-      child: Center(
-        child: TableCalendar(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 50),
+        child: Center(
+          child: TableCalendar(
             firstDay: DateTime.utc(2024, 1, 1),
             lastDay: DateTime.utc(2028, 12, 31),
             focusedDay: _focusedDay,
@@ -54,15 +53,53 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },
             calendarBuilders: CalendarBuilders(
-              selectedBuilder: (context, date, events) => Container(
+              selectedBuilder: (context, date, events) {
+                final isSelectedDay = isSameDay(date, _selectedDay);
+                return Container(
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
+                  decoration: isSelectedDay
+                      ? BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(255, 245, 54, 44),
+                        )
+                      : null,
                   child: Text(
                     date.day.toString(),
-                    style: TextStyle(color: Colors.red),
-                  )),
-            )),
+                    style: TextStyle(
+                      color: isSelectedDay ? Colors.white : Colors.black,
+                    ),
+                  ),
+                );
+              },
+              todayBuilder: (context, date, _) {
+                return Center(
+                  child: Text(
+                    date.day.toString(),
+                    style: TextStyle(
+                      color: Colors.red, // 当日の日付を赤文字にする
+                    ),
+                  ),
+                );
+              },
+              defaultBuilder: (context, date, events) {
+                final weekday = date.weekday;
+                if (weekday == DateTime.saturday ||
+                    weekday == DateTime.sunday) {
+                  return Center(
+                    child: Text(
+                      date.day.toString(),
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  );
+                }
+                // 他の日はデフォルトのスタイルを使用
+                return null;
+              },
+            ),
+          ),
+        ),
       ),
-    ));
+    );
   }
 }
