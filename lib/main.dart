@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import "package:joint_cost/viewmodel/setting_model.dart";
+import 'package:joint_cost/view/settings.dart';
 
 void main() {
   initializeDateFormatting('ja').then((_) => runApp(const MyApp()));
@@ -33,88 +35,18 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime _focusedDay = DateTime.now();
   StartingDayOfWeek _startingDayOfWeek = StartingDayOfWeek.sunday; // 初期設定は日曜日
 
-  void _showSettingsPanel() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.5, //設定画面高さ
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      Expanded(
-                        child: Text(
-                          '設定',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Opacity(
-                        opacity: 0.0,
-                        child: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: null,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'カレンダー始まり: ',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      DropdownButton<StartingDayOfWeek>(
-                        value: _startingDayOfWeek,
-                        onChanged: (StartingDayOfWeek? newValue) {
-                          if (newValue != null) {
-                            setState(() {
-                              _startingDayOfWeek = newValue;
-                            });
-                          }
-                        },
-                        items: [
-                          DropdownMenuItem<StartingDayOfWeek>(
-                            value: StartingDayOfWeek.sunday,
-                            child: Text('日曜'),
-                          ),
-                          DropdownMenuItem<StartingDayOfWeek>(
-                            value: StartingDayOfWeek.monday,
-                            child: Text('月曜'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: _showSettingsPanel, // 歯車マークをタップした時の処理を更新
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => const SettingPage(),
+            );
+          },
         ),
         title: Text(widget.title),
       ),
