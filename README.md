@@ -1,5 +1,7 @@
 # joint_cost
 
+This is a project in the process of creating a collaborative housekeeping application.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
