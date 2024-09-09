@@ -1,6 +1,6 @@
 # joint_cost
 
-This is a project in the process of creating a collaborative housekeeping application.
+This is a project in the process of creating a collaborative housekeeping application. (Flutter)
 
 
 ## Getting Started
