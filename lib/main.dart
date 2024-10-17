@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import "package:joint_cost/viewmodel/setting_model.dart";
-import 'package:joint_cost/view/settings.dart';
 import 'package:provider/provider.dart';
+
+// 読み込みファイル
+import 'package:joint_cost/view/settings.dart';
+import "package:joint_cost/viewmodel/setting_model.dart";
 
 void main() {
   initializeDateFormatting('ja').then((_) => runApp(
